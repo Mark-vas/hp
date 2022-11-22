@@ -1,0 +1,17 @@
+.react-multi-carousel-list {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+.productImg {
+  width: 95%;
+  height: 250px;
+  object-fit: fill;
+  display: block;
+  margin: 0 auto;
+}
+.productInf {
+  padding-left: 6px;
+  height: 1.3em;
+  overflow: hidden;
+}
