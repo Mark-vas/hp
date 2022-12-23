@@ -12,6 +12,7 @@ import "./Products.css";
 import Error from "../Error/Error";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { NavLink } from "react-router-dom";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -69,37 +70,54 @@ const Products = () => {
         <Error />
       ) : (
         <>
-          <h1>Smartphones</h1>
+          <NavLink to={"/smartphones"}>
+            <h1>Smartphones</h1>
+          </NavLink>
           <Carousel draggable={false} responsive={responsive}>
             {smartphones?.map((elem, index) => {
               return <ProductCategory key={index} product={elem} />;
             })}
           </Carousel>
-          <h1>Laptops</h1>
+
+          <NavLink to={"/laptops"}>
+            <h1>Laptops</h1>
+          </NavLink>
           <Carousel draggable={false} responsive={responsive}>
             {laptops?.map((elem, index) => {
               return <ProductCategory key={index} product={elem} />;
             })}
           </Carousel>
-          <h1>Fragrances</h1>
+
+          <NavLink to={"/fragrances"}>
+            <h1>Fragrances</h1>
+          </NavLink>
           <Carousel draggable={false} responsive={responsive}>
             {fragrances?.map((elem, index) => {
               return <ProductCategory key={index} product={elem} />;
             })}
           </Carousel>
-          <h1>Skincare</h1>
+
+          <NavLink to={"/skincare"}>
+            <h1>Skincare</h1>
+          </NavLink>
           <Carousel draggable={false} responsive={responsive}>
             {skincare?.map((elem, index) => {
               return <ProductCategory key={index} product={elem} />;
             })}
           </Carousel>
-          <h1>Groceries</h1>
+
+          <NavLink to={"/groceries"}>
+            <h1>Groceries</h1>
+          </NavLink>
           <Carousel draggable={false} responsive={responsive}>
             {groceries?.map((elem, index) => {
               return <ProductCategory key={index} product={elem} />;
             })}
           </Carousel>
-          <h1>Home decoration</h1>
+
+          <NavLink to={"/home-decoration"}>
+            <h1>Home decoration</h1>
+          </NavLink>
           <Carousel draggable={false} responsive={responsive}>
             {homeDecoration?.map((elem, index) => {
               return <ProductCategory key={index} product={elem} />;

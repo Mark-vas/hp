@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getSkincare } from "../../../Store/Skincare/SkincareSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import CategoryPage from "../CategoryPage/CategoryPage";
+import { productsBasketSelector } from "../../../Store/Products/ProductsSelector";
 
 const Skincare = () => {
   const skincare = useSelector(skincareSelector);
@@ -20,12 +21,20 @@ const Skincare = () => {
     return <CategoryPage key={index} e={e} />;
   });
 
+  const block_styles = {
+    marginTop: "10px",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "start",
+    maxWidth: "1440px",
+  };
+
   return (
     <>
       {skincare.length == 0 ? (
         <CircularProgress style={{ display: "block", margin: "0 auto" }} />
       ) : (
-        <div>{imgsSkincare}</div>
+        <div style={block_styles}>{imgsSkincare}</div>
       )}
     </>
   );

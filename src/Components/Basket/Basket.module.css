@@ -1,0 +1,48 @@
+.basket {
+  display: flex;
+  margin-top: 30px;
+}
+
+.basket_block {
+  width: 70%;
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+}
+
+.null_block {
+  width: 5%;
+}
+
+.pay_block {
+  width: 25%;
+}
+
+.product {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  /* align-items: center; */
+}
+.description {
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
+
+.hr {
+  margin: 10px 0;
+  padding: 0;
+  height: 0;
+  border: none;
+  border-top: 2px dashed #ddd;
+}
+/*.description p {
+  margin: 0;
+  padding: 0;
+}
+.image {
+  width: 200px;
+  height: 200px;
+}
+*/

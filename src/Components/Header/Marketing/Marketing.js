@@ -13,7 +13,9 @@ const Marketing = () => {
         <img src="https://sun9-77.userapi.com/c857528/v857528833/b9be0/8MiLazcKJ4U.jpg" />
         <img src="https://sun9-67.userapi.com/c844721/v844721600/12813f/IOTsEqFrmZY.jpg" />
       </Slider>
-      <p>*а пока наслаждайтесь красивыми пейзажами</p>
+      <p style={{ textAlign: "end", margin: 0 }}>
+        *а пока наслаждайтесь красивыми пейзажами
+      </p>
     </>
   );
 };

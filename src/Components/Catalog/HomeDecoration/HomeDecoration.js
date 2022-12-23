@@ -20,12 +20,20 @@ const HomeDecoration = () => {
     return <CategoryPage key={index} e={e} />;
   });
 
+  const block_styles = {
+    marginTop: "10px",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "start",
+    maxWidth: "1440px",
+  };
+
   return (
     <>
       {homeDecoration.length == 0 ? (
         <CircularProgress style={{ display: "block", margin: "0 auto" }} />
       ) : (
-        <div>{imgsHomeDecoration}</div>
+        <div style={block_styles}>{imgsHomeDecoration}</div>
       )}
     </>
   );

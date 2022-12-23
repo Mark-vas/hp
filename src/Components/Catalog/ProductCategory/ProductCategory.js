@@ -3,15 +3,12 @@ import "./ProductCategory.css";
 import Rating from "@mui/material/Rating";
 import { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import {
-  likeToggle,
-  getAddToBasket,
-} from "../../../Store/Products/ProductsSlice";
+import { likeToggle } from "../../../Store/Products/ProductsSlice";
 import { useDispatch } from "react-redux";
-import Button from "@mui/material/Button";
+import { NavLink } from "react-router-dom";
+import AddToBasketButton from "../../AddToBasketButton/AddToBasketButton";
 
 const ProductCategory = (props) => {
-  // debugger;
   const dispatch = useDispatch();
   const [show, mouseOnOff] = useState(false);
 
@@ -32,79 +29,54 @@ const ProductCategory = (props) => {
     color: "#fc2847",
   };
 
-  const clickLike = (e) => {
-    dispatch(likeToggle(e.currentTarget.parentElement.id));
+  const discount = {
+    position: "absolute",
+    borderRadius: "5px",
+    backgroundColor: "red",
+    padding: "1px",
+    color: "white",
+    bottom: "167px",
+    left: "16px",
   };
 
-  const addToBasket = (e) => {
-    dispatch(getAddToBasket(e.currentTarget.parentElement.id));
+  const clickLike = (e) => {
+    dispatch(likeToggle(Number(e.currentTarget.parentElement.id)));
   };
 
   return (
-    <div>
-      <div
-        id={props.product.id}
-        onMouseOver={() => mouseOnOff((show) => !show)}
-        onMouseOut={() => mouseOnOff((show) => !show)}
-      >
-        {props.product.like ? (
-          <FavoriteIcon
-            onClick={clickLike}
-            style={show ? likeOn : likeDontShow}
-          ></FavoriteIcon>
-        ) : (
-          <FavoriteIcon
-            onClick={clickLike}
-            style={show ? likeShow : likeDontShow}
-          ></FavoriteIcon>
-        )}
-        <img className="productImg" src={props.product.thumbnail} />
-        <p className="productInf" style={{ fontWeight: "bold" }}>
-          {props.product.price}$
-        </p>
-        <p className="productInf">{props.product.title}</p>
-        <Rating
-          style={{ paddingLeft: "6px" }}
-          precision={0.5}
-          name="read-only"
-          size="small"
-          value={props.product.rating}
-          readOnly
-        />
-        {props.product.basket ? (
-          <Button
-            onClick={addToBasket}
-            variant="contained"
-            color="success"
-            style={{
-              fontWeight: "bold",
-              display: "block",
-              margin: "5px auto",
-              width: "95%",
-              height: "25px",
-              padding: "0px 16px",
-            }}
-          >
-            in the basket
-          </Button>
-        ) : (
-          <Button
-            onClick={addToBasket}
-            variant="contained"
-            style={{
-              backgroundColor: "rgb(0,141,210)",
-              fontWeight: "bold",
-              display: "block",
-              margin: "5px auto",
-              width: "95%",
-              height: "25px",
-              padding: "0px 16px",
-            }}
-          >
-            into a basket
-          </Button>
-        )}
-      </div>
+    <div
+      id={props.product.id}
+      onMouseOver={() => mouseOnOff((show) => !show)}
+      onMouseOut={() => mouseOnOff((show) => !show)}
+    >
+      {props.product.like ? (
+        <FavoriteIcon
+          onClick={clickLike}
+          style={show ? likeOn : likeDontShow}
+        ></FavoriteIcon>
+      ) : (
+        <FavoriteIcon
+          onClick={clickLike}
+          style={show ? likeShow : likeDontShow}
+        ></FavoriteIcon>
+      )}
+      <p style={discount}>-{props.product.discountPercentage}%</p>
+      <img className="productImg" src={props.product.images[0]} />
+      <h2 className="productInf" style={{ fontWeight: "bold" }}>
+        ${props.product.price}
+      </h2>
+      <NavLink to={`/${props.product.category}/${props.product.id}`}>
+        <h3 className="productInf">{props.product.title}</h3>
+      </NavLink>
+      <Rating
+        style={{ paddingLeft: "6px" }}
+        precision={0.1}
+        name="read-only"
+        size="small"
+        value={props.product.rating}
+        readOnly
+      />
+      <AddToBasketButton basket={props.product.basket} />
     </div>
   );
 };

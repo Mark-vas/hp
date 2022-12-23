@@ -1,0 +1,9 @@
+.carousel-root {
+  max-width: 500px;
+}
+.carousel .thumbs-wrapper {
+  margin: 0;
+}
+.description_block {
+  display: flex;
+}

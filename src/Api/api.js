@@ -41,4 +41,8 @@ export const api = {
     );
     return res.data;
   },
+  async productPage(id) {
+    const res = await axios.get(`https://dummyjson.com/products/${id}`);
+    return res.data;
+  },
 };

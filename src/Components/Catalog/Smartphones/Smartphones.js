@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getSmartphones } from "../../../Store/Smartphones/SmartphonesSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import CategoryPage from "../CategoryPage/CategoryPage";
+import { productsBasketSelector } from "../../../Store/Products/ProductsSelector";
 
 const Smartphones = () => {
   const smartphones = useSelector(smartphonesSelector);
@@ -20,12 +21,20 @@ const Smartphones = () => {
     return <CategoryPage key={index} e={e} />;
   });
 
+  const block_styles = {
+    marginTop: "10px",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "start",
+    maxWidth: "1440px",
+  };
+
   return (
     <>
       {smartphones.length == 0 ? (
         <CircularProgress style={{ display: "block", margin: "0 auto" }} />
       ) : (
-        <div>{imgsSmartphones}</div>
+        <div style={block_styles}>{imgsSmartphones}</div>
       )}
     </>
   );

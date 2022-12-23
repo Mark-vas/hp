@@ -5,6 +5,7 @@ const initialState = {
   products: [],
   likeProducts: [],
   productsBasket: [],
+  productPageInf: {},
   error: "",
 };
 
@@ -26,8 +27,23 @@ export const likeToggle = createAsyncThunk(
 
 export const getAddToBasket = createAsyncThunk(
   "products/getAddToBasket",
+  (obj, { rejectWithValue, dispatch }) => {
+    dispatch(setAddToBasket(obj));
+  }
+);
+
+export const getProductPage = createAsyncThunk(
+  "products/getProductPage",
+  async (id, { rejectWithValue, dispatch }) => {
+    const res = await api.productPage(id);
+    dispatch(setProductPage(res));
+  }
+);
+
+export const getDelElemFromBasket = createAsyncThunk(
+  "products/getProductPage",
   (id, { rejectWithValue, dispatch }) => {
-    dispatch(setAddToBasket(id));
+    dispatch(setDelElemFromBasket(id));
   }
 );
 
@@ -61,8 +77,8 @@ export const ProductsSlice = createSlice({
     },
     setAddToBasket: (state, action) => {
       for (let i = 0; i < state.products.length; i++) {
-        if (state.products[i].id == action.payload) {
-          state.products[i].basket = !state.products[i].basket;
+        if (state.products[i].id == action.payload.id) {
+          state.products[i].basket = !action.payload.boolean;
           if (state.productsBasket.some((e) => e.id == state.products[i].id)) {
             let arr = state.productsBasket.filter((e) => {
               return e.id !== state.products[i].id;
@@ -73,6 +89,35 @@ export const ProductsSlice = createSlice({
           }
         }
       }
+    },
+    setDelElemFromBasket: (state, action) => {
+      let arr = [];
+      for (let i = 0; i < state.productsBasket.length; i++) {
+        debugger;
+        if (state.productsBasket[i].id !== action.payload) {
+          arr.push(state.productsBasket[i]);
+        } else {
+          state.products.forEach((elem) => {
+            if (elem.id == state.productsBasket[i].id) {
+              elem.basket = !elem.basket;
+            }
+          });
+          // debugger;
+          // state.products[i].basket = !state.productsBasket[i].basket;
+          // debugger;
+        }
+      }
+      // state.productsBasket.forEach((elem) => {
+      //   debugger;
+      //   if(elem.id !== action.payload){
+      //     arr.push(elem)
+      //   } else
+      // return elem.id !== action.payload;
+      // });
+      state.productsBasket = arr;
+    },
+    setProductPage: (state, action) => {
+      state.productPageInf = action.payload;
     },
   },
   extraReducers: {
@@ -86,6 +131,11 @@ export const ProductsSlice = createSlice({
   },
 });
 
-export const { setAllProducts, setLikeToggle, setAddToBasket } =
-  ProductsSlice.actions;
+export const {
+  setDelElemFromBasket,
+  setAllProducts,
+  setLikeToggle,
+  setAddToBasket,
+  setProductPage,
+} = ProductsSlice.actions;
 export default ProductsSlice.reducer;
