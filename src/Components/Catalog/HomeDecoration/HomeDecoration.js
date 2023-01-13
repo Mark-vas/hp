@@ -1,20 +1,24 @@
 import React from "react";
-import { homeDecorationSelector } from "../../../Store/HomeDecoration/HomeDecorationSelector";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getHomeDecoration } from "../../../Store/HomeDecoration/HomeDecorationSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import CategoryPage from "../CategoryPage/CategoryPage";
+import { productsSelector } from "../../../Store/Products/ProductsSelector";
+import { getProducts } from "../../../Store/Products/ProductsSlice";
 
 const HomeDecoration = () => {
-  const homeDecoration = useSelector(homeDecorationSelector);
+  const products = useSelector(productsSelector);
   const dispatch = useDispatch();
-  const requestHomeDecoration = async () => {
-    dispatch(getHomeDecoration());
+  const requestProducts = async () => {
+    dispatch(getProducts());
   };
   useEffect(() => {
-    requestHomeDecoration();
+    requestProducts();
   }, []);
+
+  const homeDecoration = products?.filter((elem) => {
+    return elem.category == "home-decoration";
+  });
 
   const imgsHomeDecoration = homeDecoration?.map((e, index) => {
     return <CategoryPage key={index} e={e} />;
@@ -33,7 +37,10 @@ const HomeDecoration = () => {
       {homeDecoration.length == 0 ? (
         <CircularProgress style={{ display: "block", margin: "0 auto" }} />
       ) : (
-        <div style={block_styles}>{imgsHomeDecoration}</div>
+        <>
+          <h1>HomeDecoration</h1>
+          <div style={block_styles}>{imgsHomeDecoration}</div>
+        </>
       )}
     </>
   );

@@ -4,13 +4,14 @@ import { useDispatch } from "react-redux";
 import { getAddToBasket } from "../../Store/Products/ProductsSlice";
 
 const AddToBasketButton = (props) => {
+  // debugger;
   const dispatch = useDispatch();
   const addToBasket = (e) => {
-    let obj = {
-      boolean: props.basket,
-      id: Number(e.currentTarget.parentElement.id),
-    };
-    dispatch(getAddToBasket(obj));
+    // let obj = {
+    //   boolean: props.basket,
+    //   id: Number(e.currentTarget.parentElement.id),
+    // };
+    dispatch(getAddToBasket(Number(e.currentTarget.parentElement.id)));
   };
   return (
     <>

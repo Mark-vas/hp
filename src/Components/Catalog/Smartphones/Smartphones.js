@@ -1,21 +1,24 @@
 import React from "react";
-import { smartphonesSelector } from "../../../Store/Smartphones/SmartphonesSelector";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getSmartphones } from "../../../Store/Smartphones/SmartphonesSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import CategoryPage from "../CategoryPage/CategoryPage";
-import { productsBasketSelector } from "../../../Store/Products/ProductsSelector";
+import { productsSelector } from "../../../Store/Products/ProductsSelector";
+import { getProducts } from "../../../Store/Products/ProductsSlice";
 
 const Smartphones = () => {
-  const smartphones = useSelector(smartphonesSelector);
+  const products = useSelector(productsSelector);
   const dispatch = useDispatch();
-  const requestSmartphones = async () => {
-    dispatch(getSmartphones());
+  const requestProducts = async () => {
+    dispatch(getProducts());
   };
   useEffect(() => {
-    requestSmartphones();
+    requestProducts();
   }, []);
+
+  const smartphones = products?.filter((elem) => {
+    return elem.category == "smartphones";
+  });
 
   const imgsSmartphones = smartphones?.map((e, index) => {
     return <CategoryPage key={index} e={e} />;
@@ -34,7 +37,10 @@ const Smartphones = () => {
       {smartphones.length == 0 ? (
         <CircularProgress style={{ display: "block", margin: "0 auto" }} />
       ) : (
-        <div style={block_styles}>{imgsSmartphones}</div>
+        <>
+          <h1>Smartphones</h1>
+          <div style={block_styles}>{imgsSmartphones}</div>
+        </>
       )}
     </>
   );

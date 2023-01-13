@@ -1,21 +1,24 @@
 import React from "react";
-import { skincareSelector } from "../../../Store/Skincare/SkincareSelector";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getSkincare } from "../../../Store/Skincare/SkincareSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import CategoryPage from "../CategoryPage/CategoryPage";
-import { productsBasketSelector } from "../../../Store/Products/ProductsSelector";
+import { productsSelector } from "../../../Store/Products/ProductsSelector";
+import { getProducts } from "../../../Store/Products/ProductsSlice";
 
 const Skincare = () => {
-  const skincare = useSelector(skincareSelector);
+  const products = useSelector(productsSelector);
   const dispatch = useDispatch();
-  const requestSkincare = async () => {
-    dispatch(getSkincare());
+  const requestProducts = async () => {
+    dispatch(getProducts());
   };
   useEffect(() => {
-    requestSkincare();
+    requestProducts();
   }, []);
+
+  const skincare = products?.filter((elem) => {
+    return elem.category == "skincare";
+  });
 
   const imgsSkincare = skincare?.map((e, index) => {
     return <CategoryPage key={index} e={e} />;
@@ -34,7 +37,10 @@ const Skincare = () => {
       {skincare.length == 0 ? (
         <CircularProgress style={{ display: "block", margin: "0 auto" }} />
       ) : (
-        <div style={block_styles}>{imgsSkincare}</div>
+        <>
+          <h1>Skincare</h1>
+          <div style={block_styles}>{imgsSkincare}</div>
+        </>
       )}
     </>
   );

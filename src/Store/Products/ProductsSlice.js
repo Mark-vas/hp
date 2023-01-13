@@ -3,9 +3,9 @@ import { api } from "../../Api/api";
 
 const initialState = {
   products: [],
-  likeProducts: [],
-  productsBasket: [],
-  productPageInf: {},
+  // likeProducts: [],
+  // productsBasket: [],
+  // productPageInf: {},
   error: "",
 };
 
@@ -27,23 +27,37 @@ export const likeToggle = createAsyncThunk(
 
 export const getAddToBasket = createAsyncThunk(
   "products/getAddToBasket",
-  (obj, { rejectWithValue, dispatch }) => {
-    dispatch(setAddToBasket(obj));
+  (id, { rejectWithValue, dispatch }) => {
+    dispatch(setAddToBasket(id));
   }
 );
 
-export const getProductPage = createAsyncThunk(
-  "products/getProductPage",
-  async (id, { rejectWithValue, dispatch }) => {
-    const res = await api.productPage(id);
-    dispatch(setProductPage(res));
-  }
-);
+// export const getProductPage = createAsyncThunk(
+//   "products/getProductPage",
+//   async (id, { rejectWithValue, dispatch }) => {
+//     const res = await api.productPage(id);
+//     dispatch(setProductPage(res));
+//   }
+// );
 
 export const getDelElemFromBasket = createAsyncThunk(
   "products/getProductPage",
   (id, { rejectWithValue, dispatch }) => {
     dispatch(setDelElemFromBasket(id));
+  }
+);
+
+export const plusElemInTheBasket = createAsyncThunk(
+  "products/getProductPage",
+  (id, { rejectWithValue, dispatch }) => {
+    dispatch(setPlusElemInTheBasket(id));
+  }
+);
+
+export const minusElemInTheBasket = createAsyncThunk(
+  "products/getProductPage",
+  (id, { rejectWithValue, dispatch }) => {
+    dispatch(setMinusElemInTheBasket(id));
   }
 );
 
@@ -57,67 +71,56 @@ export const ProductsSlice = createSlice({
         for (let i = 0; i < state.products.length; i++) {
           state.products[i].like = false;
           state.products[i].basket = false;
+          state.products[i].totalElemInBasket = 0;
         }
       }
     },
     setLikeToggle: (state, action) => {
-      for (let i = 0; i < state.products.length; i++) {
-        if (state.products[i].id == action.payload) {
-          state.products[i].like = !state.products[i].like;
-          if (state.likeProducts.some((e) => e.id == state.products[i].id)) {
-            let arr = state.likeProducts.filter((e) => {
-              return e.id !== state.products[i].id;
-            });
-            state.likeProducts = arr;
-          } else {
-            state.likeProducts = [...state.likeProducts, state.products[i]];
-          }
+      state.products.forEach((elem) => {
+        if (elem.id == action.payload) {
+          elem.like = !elem.like;
         }
-      }
+        return state.products;
+      });
     },
     setAddToBasket: (state, action) => {
-      for (let i = 0; i < state.products.length; i++) {
-        if (state.products[i].id == action.payload.id) {
-          state.products[i].basket = !action.payload.boolean;
-          if (state.productsBasket.some((e) => e.id == state.products[i].id)) {
-            let arr = state.productsBasket.filter((e) => {
-              return e.id !== state.products[i].id;
-            });
-            state.productsBasket = arr;
-          } else {
-            state.productsBasket = [...state.productsBasket, state.products[i]];
-          }
+      state.products.forEach((elem) => {
+        if (elem.id == action.payload) {
+          elem.basket = !elem.basket;
+          elem.totalElemInBasket == 0
+            ? (elem.totalElemInBasket = elem.totalElemInBasket + 1)
+            : (elem.totalElemInBasket = 0);
         }
-      }
+        return state.products;
+      });
     },
     setDelElemFromBasket: (state, action) => {
-      let arr = [];
-      for (let i = 0; i < state.productsBasket.length; i++) {
-        debugger;
-        if (state.productsBasket[i].id !== action.payload) {
-          arr.push(state.productsBasket[i]);
-        } else {
-          state.products.forEach((elem) => {
-            if (elem.id == state.productsBasket[i].id) {
-              elem.basket = !elem.basket;
-            }
-          });
-          // debugger;
-          // state.products[i].basket = !state.productsBasket[i].basket;
-          // debugger;
+      state.products.forEach((elem) => {
+        if (elem.id == action.payload) {
+          elem.basket = !elem.basket;
+          elem.totalElemInBasket = 0;
         }
-      }
-      // state.productsBasket.forEach((elem) => {
-      //   debugger;
-      //   if(elem.id !== action.payload){
-      //     arr.push(elem)
-      //   } else
-      // return elem.id !== action.payload;
-      // });
-      state.productsBasket = arr;
+        return state.products;
+      });
     },
-    setProductPage: (state, action) => {
-      state.productPageInf = action.payload;
+    // setProductPage: (state, action) => {
+    //   state.productPageInf = action.payload;
+    // },
+    setPlusElemInTheBasket: (state, action) => {
+      state.products.forEach((elem) => {
+        if (elem.id == action.payload) {
+          elem.totalElemInBasket = elem.totalElemInBasket + 1;
+        }
+        return state.products;
+      });
+    },
+    setMinusElemInTheBasket: (state, action) => {
+      state.products.forEach((elem) => {
+        if (elem.id == action.payload) {
+          elem.totalElemInBasket = elem.totalElemInBasket - 1;
+        }
+        return state.products;
+      });
     },
   },
   extraReducers: {
@@ -136,6 +139,8 @@ export const {
   setAllProducts,
   setLikeToggle,
   setAddToBasket,
-  setProductPage,
+  // setProductPage,
+  setPlusElemInTheBasket,
+  setMinusElemInTheBasket,
 } = ProductsSlice.actions;
 export default ProductsSlice.reducer;

@@ -1,22 +1,20 @@
 import React from "react";
-import {
-  productsBasketSelector,
-  productsFavouritesSelector,
-} from "../../Store/Products/ProductsSelector";
 import { useSelector } from "react-redux";
 import style from "./Basket.module.css";
 import { NavLink } from "react-router-dom";
 import {
   likeToggle,
   getDelElemFromBasket,
+  plusElemInTheBasket,
+  minusElemInTheBasket,
 } from "../../Store/Products/ProductsSlice";
 import { useDispatch } from "react-redux";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ClearIcon from "@mui/icons-material/Clear";
+import { productsSelector } from "../../Store/Products/ProductsSelector";
 
 const Basket = () => {
-  const favorite = useSelector(productsFavouritesSelector);
-
+  const prod = useSelector(productsSelector);
   const dispatch = useDispatch();
   const clickLike = (e) => {
     dispatch(likeToggle(Number(e.currentTarget.parentElement.id)));
@@ -29,18 +27,33 @@ const Basket = () => {
     color: "gray",
   };
 
-  const basket = useSelector(productsBasketSelector);
-  const basketBlock = basket?.map((elem, index) => {
-    let like = false;
-    favorite.forEach((element) => {
-      if (element.id == elem.id) {
-        like = true;
-      }
-    });
+  let basket = prod?.filter((elem) => {
+    return elem.basket == true;
+  });
 
+  let obj = {
+    sum: 0,
+    total: basket.length,
+  };
+  basket?.forEach((e) => {
+    obj.sum = obj.sum + e.price * e.totalElemInBasket;
+  });
+
+  console.log(obj);
+
+  const basketBlock = basket?.map((elem, index) => {
     const clickDel = (e) => {
       dispatch(getDelElemFromBasket(Number(e.currentTarget.parentElement.id)));
     };
+
+    const plusElem = (e) => {
+      dispatch(plusElemInTheBasket(Number(e.currentTarget.parentElement.id)));
+    };
+
+    const minusElem = (e) => {
+      dispatch(minusElemInTheBasket(Number(e.currentTarget.parentElement.id)));
+    };
+
     return (
       <div key={index}>
         <div className={style.product}>
@@ -55,7 +68,7 @@ const Basket = () => {
               <p>{elem.description}</p>
               <p>Brand: {elem.brand}</p>
               <div>
-                {like ? (
+                {elem.like ? (
                   <div
                     id={elem.id}
                     style={{
@@ -105,6 +118,28 @@ const Basket = () => {
             </div>
             <div>
               <h2>{elem.price}$</h2>
+              <div id={elem.id}>
+                {/* {elem.totalElemInBasket == 1 ? (
+                  <>
+                    <button>-</button>
+                    <span>{elem.totalElemInBasket}</span>
+                    <button onClick={plusElem}>+</button>{" "}
+                  </>
+                ) : (
+                  <>
+                    <button onClick={minusElem}>-</button>
+                    <span>{elem.totalElemInBasket}</span>
+                    <button onClick={plusElem}>+</button>
+                  </>
+                )} */}
+                <button
+                  onClick={elem.totalElemInBasket == 1 ? clickDel : minusElem}
+                >
+                  -
+                </button>
+                <span>{elem.totalElemInBasket}</span>
+                <button onClick={plusElem}>+</button>
+              </div>
             </div>
           </div>
         </div>
@@ -124,7 +159,9 @@ const Basket = () => {
             {basketBlock}
           </div>
           <div className={style.null_block}></div>
-          <div className={style.pay_block}>Блок ОПЛАТЫ</div>
+          <div className={style.pay_block}>
+            <p>Всего к оплате: {obj.sum}</p>
+          </div>
         </>
       ) : (
         <div>The basket is empty</div>
@@ -134,44 +171,3 @@ const Basket = () => {
 };
 
 export default Basket;
-
-// const likeShow = {
-//   display: "block",
-//   backgroundColor: "green",
-// };
-// const likeDontShow = {
-//   display: "block",
-// };
-
-//   <div style={{ margin: "0 auto", width: "80%" }}>
-//     <div className={style.CategoryPage}>
-//       <div style={{ margin: "0 auto" }}>
-//         <img className={style.image} src={props.e.thumbnail} />
-//       </div>
-//       <div className={style.description}>
-// <div id={props.e.id}>
-//   <NavLink to={`/${props.e.category}/${props.e.id}`}>
-//     <h3>{props.e.title}</h3>
-//   </NavLink>
-//   <p>{props.e.description}</p>
-//   <p>Brand: {props.e.brand}</p>
-//   <Rating
-//     style={{ padding: "10px 0" }}
-//     precision={0.5}
-//     name="read-only"
-//     size="small"
-//     value={props.e.rating}
-//     readOnly
-//   />
-//   <button style={like ? likeShow : likeDontShow} onClick={clickLike}>
-//     В избранное
-//   </button>
-// </div>
-//         <div id={props.e.id}>
-//           <h2>{props.e.price}$</h2>
-//           <AddToBasketButton basket={props.basket} />
-//         </div>
-//       </div>
-//     </div>
-//     <hr className={style.hr} />
-//   </div>

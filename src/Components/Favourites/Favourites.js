@@ -1,8 +1,4 @@
 import React from "react";
-import {
-  productsFavouritesSelector,
-  productsBasketSelector,
-} from "../../Store/Products/ProductsSelector";
 import { useSelector } from "react-redux";
 import style from "./Favourites.module.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -11,11 +7,11 @@ import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import Rating from "@mui/material/Rating";
 import AddToBasketButton from "../AddToBasketButton/AddToBasketButton";
+import { productsSelector } from "../../Store/Products/ProductsSelector";
 
 const Favourites = () => {
-  const basket = useSelector(productsBasketSelector);
   const dispatch = useDispatch();
-  const favourites = useSelector(productsFavouritesSelector);
+  const prod = useSelector(productsSelector);
 
   const clickLike = (e) => {
     dispatch(likeToggle(Number(e.currentTarget.parentElement.id)));
@@ -39,14 +35,11 @@ const Favourites = () => {
     margin: 0,
   };
 
+  let favourites = prod?.filter((elem) => {
+    return elem.like == true;
+  });
+
   const blockFavoriteProducts = favourites?.map((elem, index) => {
-    debugger;
-    let boolean = false;
-    basket.forEach((element) => {
-      if (element.id == elem.id) {
-        boolean = true;
-      }
-    });
     return (
       <div className={style.block_product} key={index} id={elem.id}>
         <div className={style.block_product_img} id={elem.id}>
@@ -55,7 +48,7 @@ const Favourites = () => {
           <img src={elem.images[0]} />
         </div>
         <div>
-          <NavLink>
+          <NavLink to={`/${elem.category}/${elem.id}`}>
             <h3 style={{ height: "50px" }}>{elem.title}</h3>
           </NavLink>
           <p style={{ height: "100px" }}>{elem.description}</p>
@@ -69,7 +62,8 @@ const Favourites = () => {
           />
         </div>
         <div id={elem.id}>
-          <AddToBasketButton basket={boolean} />
+          {/* <AddToBasketButton basket={boolean} /> */}
+          <AddToBasketButton basket={elem.basket} />
         </div>
       </div>
     );
