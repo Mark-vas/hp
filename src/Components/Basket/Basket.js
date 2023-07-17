@@ -33,13 +33,12 @@ const Basket = () => {
 
   let obj = {
     sum: 0,
-    total: basket.length,
+    total: 0,
   };
   basket?.forEach((e) => {
     obj.sum = obj.sum + e.price * e.totalElemInBasket;
+    obj.total = obj.total + e.totalElemInBasket;
   });
-
-  console.log(obj);
 
   const basketBlock = basket?.map((elem, index) => {
     const clickDel = (e) => {
@@ -117,21 +116,8 @@ const Basket = () => {
               </div>
             </div>
             <div>
-              <h2>{elem.price}$</h2>
+              <h2>${elem.price}</h2>
               <div id={elem.id}>
-                {/* {elem.totalElemInBasket == 1 ? (
-                  <>
-                    <button>-</button>
-                    <span>{elem.totalElemInBasket}</span>
-                    <button onClick={plusElem}>+</button>{" "}
-                  </>
-                ) : (
-                  <>
-                    <button onClick={minusElem}>-</button>
-                    <span>{elem.totalElemInBasket}</span>
-                    <button onClick={plusElem}>+</button>
-                  </>
-                )} */}
                 <button
                   onClick={elem.totalElemInBasket == 1 ? clickDel : minusElem}
                 >
@@ -153,14 +139,25 @@ const Basket = () => {
         <>
           <div className={style.basket_block}>
             <h1>
-              Basket {basket.length}{" "}
-              {basket.length == 1 ? "product" : "products"}
+              Basket{" "}
+              <span>
+                {basket.length} {basket.length == 1 ? "product" : "products"}
+              </span>
             </h1>
             {basketBlock}
           </div>
           <div className={style.null_block}></div>
           <div className={style.pay_block}>
-            <p>Всего к оплате: {obj.sum}</p>
+            <div className={style.border_pay_block}>
+              <h1>Итого: ${obj.sum}</h1>
+              <p>Всего товаров: {obj.total}</p>
+            </div>
+            <a
+              target="_blank"
+              href="https://hh.ru/resume/8ac4e48aff08e59a610039ed1f674139614f35"
+            >
+              <button className={style.button_pay}>Pay</button>
+            </a>
           </div>
         </>
       ) : (

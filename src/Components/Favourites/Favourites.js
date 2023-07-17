@@ -62,7 +62,6 @@ const Favourites = () => {
           />
         </div>
         <div id={elem.id}>
-          {/* <AddToBasketButton basket={boolean} /> */}
           <AddToBasketButton basket={elem.basket} />
         </div>
       </div>

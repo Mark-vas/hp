@@ -44,11 +44,6 @@ const Products = () => {
     return elem.category == "home-decoration";
   });
 
-  // Все элементы
-  //   const productsElem = products?.map((elem, index) => {
-  //     return <ProductCategory key={index} product={elem} />;
-  //   });
-
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },

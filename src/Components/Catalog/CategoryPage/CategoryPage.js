@@ -1,21 +1,15 @@
 import React from "react";
 import style from "./CategoryPage.module.css";
 import Rating from "@mui/material/Rating";
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getProducts } from "../../../Store/Products/ProductsSlice";
 import AddToBasketButton from "../../AddToBasketButton/AddToBasketButton";
 import { likeToggle } from "../../../Store/Products/ProductsSlice";
-import {
-  productsFavouritesSelector,
-  productsBasketSelector,
-} from "../../../Store/Products/ProductsSelector";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const CategoryPage = (props) => {
-  // debugger;
   const dispatch = useDispatch();
   const requestProducts = async () => {
     dispatch(getProducts());
@@ -25,24 +19,6 @@ const CategoryPage = (props) => {
   }, []);
 
   const [show, mouseOnOff] = useState(false);
-
-  // const basket = useSelector(productsBasketSelector);
-  // let boolean = false;
-  // basket.forEach((element) => {
-  //   if (element.id == props.e.id) {
-  //     return (boolean = true);
-  //   }
-  // });
-
-  // const favouriteProducts = useSelector(productsFavouritesSelector);
-  // let like = false;
-  // if (favouriteProducts.length > 0) {
-  //   favouriteProducts.forEach((element) => {
-  //     if (element.id == props.e.id) {
-  //       like = true;
-  //     }
-  //   });
-  // }
 
   const clickLike = (e) => {
     let id = Number(e.currentTarget.parentElement.id);

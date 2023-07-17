@@ -3,16 +3,13 @@ import { api } from "../../Api/api";
 
 const initialState = {
   products: [],
-  // likeProducts: [],
-  // productsBasket: [],
-  // productPageInf: {},
   error: "",
 };
 
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   // _ - сюда можно что-то передать, например при удалении или добавлении
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, { dispatch }) => {
     const res = await api.products();
     dispatch(setAllProducts(res));
   }
@@ -20,43 +17,35 @@ export const getProducts = createAsyncThunk(
 
 export const likeToggle = createAsyncThunk(
   "products/likeToggle",
-  (id, { rejectWithValue, dispatch }) => {
+  (id, { dispatch }) => {
     dispatch(setLikeToggle(id));
   }
 );
 
 export const getAddToBasket = createAsyncThunk(
   "products/getAddToBasket",
-  (id, { rejectWithValue, dispatch }) => {
+  (id, { dispatch }) => {
     dispatch(setAddToBasket(id));
   }
 );
 
-// export const getProductPage = createAsyncThunk(
-//   "products/getProductPage",
-//   async (id, { rejectWithValue, dispatch }) => {
-//     const res = await api.productPage(id);
-//     dispatch(setProductPage(res));
-//   }
-// );
-
 export const getDelElemFromBasket = createAsyncThunk(
   "products/getProductPage",
-  (id, { rejectWithValue, dispatch }) => {
+  (id, { dispatch }) => {
     dispatch(setDelElemFromBasket(id));
   }
 );
 
 export const plusElemInTheBasket = createAsyncThunk(
   "products/getProductPage",
-  (id, { rejectWithValue, dispatch }) => {
+  (id, { dispatch }) => {
     dispatch(setPlusElemInTheBasket(id));
   }
 );
 
 export const minusElemInTheBasket = createAsyncThunk(
   "products/getProductPage",
-  (id, { rejectWithValue, dispatch }) => {
+  (id, { dispatch }) => {
     dispatch(setMinusElemInTheBasket(id));
   }
 );
@@ -103,9 +92,6 @@ export const ProductsSlice = createSlice({
         return state.products;
       });
     },
-    // setProductPage: (state, action) => {
-    //   state.productPageInf = action.payload;
-    // },
     setPlusElemInTheBasket: (state, action) => {
       state.products.forEach((elem) => {
         if (elem.id == action.payload) {
@@ -122,12 +108,12 @@ export const ProductsSlice = createSlice({
         return state.products;
       });
     },
+    setCountLimit: (state, action) => {
+      state.limit = action.payload;
+      return state.limit;
+    },
   },
   extraReducers: {
-    // Может потребоваться в случае необходимости обновления объекта, относящегося к другим Slice.
-    // fulfilled - все ОК
-    // pending - загрузка
-    // rejected - ошибка
     [getProducts.rejected]: (state, action) => {
       state.error = action.error.message;
     },
@@ -139,8 +125,8 @@ export const {
   setAllProducts,
   setLikeToggle,
   setAddToBasket,
-  // setProductPage,
   setPlusElemInTheBasket,
   setMinusElemInTheBasket,
+  setCountLimit,
 } = ProductsSlice.actions;
 export default ProductsSlice.reducer;
