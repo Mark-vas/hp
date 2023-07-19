@@ -12,7 +12,6 @@ import HomeDecoration from "./Components/Catalog/HomeDecoration/HomeDecoration";
 import Basket from "./Components/Basket/Basket";
 import Favourites from "./Components/Favourites/Favourites";
 import ProductPage from "./Components/ProductPage/ProductPage";
-import Auth from "./Components/Authorization/Authorization";
 
 function App() {
   return (
@@ -35,7 +34,6 @@ function App() {
           <Route path="/home-decoration/:id" element={<ProductPage />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/favourites" element={<Favourites />} />
-          <Route path="/auth" element={<Auth />} />
         </Routes>
       </div>
     </BrowserRouter>

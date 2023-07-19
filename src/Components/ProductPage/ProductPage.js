@@ -13,6 +13,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import "./ProductPage.css";
 import { likeToggle } from "../../Store/Products/ProductsSlice";
+import imgFavourites from "../../Images/favourites";
 
 const ProductPage = () => {
   let { id } = useParams();
@@ -31,11 +32,14 @@ const ProductPage = () => {
   };
 
   const likeShow = {
-    display: "block",
-    backgroundColor: "green",
+    backgroundColor: "crimson",
+    width: "40px",
+    borderRadius: "50%",
   };
   const likeDontShow = {
-    display: "block",
+    backgroundColor: "rgb(0,141,210)",
+    width: "40px",
+    borderRadius: "50%",
   };
 
   const productInformation = product?.filter((e) => id == e.id);
@@ -88,11 +92,18 @@ const ProductPage = () => {
               </Box>
               <p>In stock: {productInformation[0].stock}</p>
               <button
-                style={productInformation[0].like ? likeShow : likeDontShow}
                 onClick={clickLike}
+                style={{
+                  backgroundColor: "transparent",
+                  borderStyle: "none",
+                  padding: 0,
+                }}
               >
-                В избранное
-              </button>{" "}
+                <img
+                  style={productInformation[0].like ? likeShow : likeDontShow}
+                  src={imgFavourites}
+                />
+              </button>
               <AddToBasketButton basket={productInformation[0].basket} />
             </div>
           </div>
